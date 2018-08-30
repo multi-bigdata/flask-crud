@@ -27,7 +27,7 @@ class Post:
     def __del__(self):
         print("글이 삭제되었습니다.")
     
-    def __repr__(self):
+    def __str__(self):
         return '''
         제목 : {} 
         내용 : {}
@@ -37,12 +37,14 @@ def main():
     p1 = Post("1번글", "1번제목")
     p2 = Post("2번글", "1번제목")
     p3 = Post("3번글", "1번제목")
-    Post.dball()
+    print(str(p1))
+    print(repr(p1))
+    
     # p2 = Post("2번글", "2번제목")
     # p1.get()
     # p2.get()
     # p1.update("1번제목")
-    print(p1)
+    # print(p1)
 
     
 if __name__ == "__main__":
