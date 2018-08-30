@@ -15,8 +15,10 @@ migrate = Migrate(app, db)
 
 @app.route("/")
 def index():
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.id.desc()).all()
     # SELECT * FROM posts;
+    # SELECT * FROM posts ORDER BY id DESC;
+    # asc <-> desc
     return render_template("index.html", posts=posts)
     
 @app.route("/posts/new")
@@ -26,8 +28,8 @@ def new():
 @app.route("/post", methods=["POST"])
 def create():
     # 사용자로부터 값을 가져와서 
-    title = request.form.get('title')
-    content = request.form.get('content')
+    title = request.form.get("title")
+    content = request.form.get("content")
     # DB에 저장
     post = Post(title=title, content=content)
     db.session.add(post)
@@ -68,3 +70,28 @@ def update(id):
     return redirect("/posts/{}".format(post.id))
     # UPDATE posts SET title = "hihi"
     # WHERE id = 2;
+    
+# Post.query.filter_by(title="1").count()
+# SELECT COUNT(*) FROM posts
+# WHERE title = '1';
+
+# Post.query.filter_by(title="1").all()
+# SELECT * FROM posts
+# WHERE title = '1';
+
+# Post.query.filter_by(title="1").first()
+# SELECT * FROM posts
+# WHERE title = '1' LIMIT 1;
+
+# Post.query.filter(Post.title != "1").all()
+# SELECT * FROM posts
+# WHERE title != '1';
+
+# Post.query.filter(Post.title.like("%1%")).all()
+# SELECT * FROM posts
+# WHERE title LIKE '%1%'; 
+
+# from sqlarchemy import and_, or_
+# Post.query.filter(and_(Post.title == "1", Post.content == "1"))
+# SELECT * FROM posts
+# WHERE title ="1" AND content="1"
