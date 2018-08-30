@@ -13,5 +13,24 @@ migrate = Migrate(app, db)
 
 
 @app.route("/")
-def hello():
-    return "Hello World!"
+def index():
+    posts = Post.query.all()
+    # SELECT * FROM posts;
+    return render_template("index.html", posts=posts)
+    
+@app.route("/posts/new")
+def new():
+    return render_template("new.html")
+
+@app.route("/post", methods=["POST"])
+def create():
+    # 사용자로부터 값을 가져와서 
+    title = request.form.get('title')
+    content = request.form.get('content')
+    # DB에 저장
+    post = Post(title=title, content=content)
+    db.session.add(post)
+    # INSERT INTO posts (title, content)
+    # VALUES ('1번글', '1번내용');
+    db.session.commit()
+    return render_template("create.html", post=post)
